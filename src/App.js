@@ -7,6 +7,7 @@ function App() {
     date: "",
     diff: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,6 +20,7 @@ function App() {
   const fetchData = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await fetch(
         `https://krutik-backend.onrender.com/api/get-stock?name=${formData.name}&date=${formData.date}&diff=${formData.diff}`
       );
@@ -43,6 +45,8 @@ function App() {
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,7 +82,7 @@ function App() {
               onChange={handleChange}
             />
           </label>
-          <button type="submit">Submit</button>
+          <button type="submit">{loading ? "Loading..." : "Submit"}</button>
         </form>
       </div>
     </div>
